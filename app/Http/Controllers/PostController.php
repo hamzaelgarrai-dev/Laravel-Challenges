@@ -17,6 +17,8 @@ class PostController extends Controller
     }
 
 
+
+
     /**
      * Store a newly created resource in storage.
      */
@@ -24,7 +26,7 @@ class PostController extends Controller
     {
        $post=Post::create([
             'title'=>$request->title,
-            'content'=>$request->content,
+            'content'=>$request->Content,
             
         ]);
 
@@ -53,7 +55,7 @@ class PostController extends Controller
     {
         $post=Post::find($id);
         $post->title=$request->title;
-        $post->content=$request->content;
+        $post->content=$request->Content;
         $post->status=$request->status;
         $post->save();
         return $post;
