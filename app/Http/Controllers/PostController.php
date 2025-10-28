@@ -3,74 +3,66 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\Tag;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        $posts = Post::get();
-        return "all posts : . $posts";
+    public function index($id){
+      $post = Post::find($id);
+      
+      return $post;
+    }
+
+  
+    public function store(Request $request ){
+
+      $user = User::find( 1);
+      $post = $user->posts()->create([
+        'title' => $request->title,
+        'auther' => $request->auther,
+        'desc' => $request->desc,
+        // 'status' => $request->status
+      ]);
+        $tag1 = Tag::create([
+        "tag_name"=>$request->tag_name
+      ]);
+      
+      $post->tags()->attach($tag1->id);
+      
+
+      return $post;
+
+
     }
 
 
 
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-       $post=Post::create([
-            'title'=>$request->title,
-            'content'=>$request->Content,
-            
-        ]);
-
+    public function show($id){
+      $post = Post::find($id);
+      if($post){
         return $post;
-        
+      }
+      return "Not found";
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        $post=Post::find($id);
-        if($post){
-            return $post;
-        }
-        return 'Not Found';
+    public function update(Request $request , $id){
+      $post = Post::find($id);
+      $post->title = $request->title;
+      $post->auther = $request->auther;
+      $post->desc = $request->desc;
+      
+      $post->save();
+      return $post;
     }
 
-
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        $post=Post::find($id);
-        $post->title=$request->title;
-        $post->content=$request->Content;
-        $post->status=$request->status;
-        $post->save();
-        return $post;
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        $post=Post::find($id);
-        if($post){
-            $post->delete();
-            return 'Deleted';
-        }
-        return 'Not Found';
+    public function destroy($id){
+      $post = Post::find($id);
+      if($post){
+        $post->delete();
+        return "delete";
+      }
+      return "not found";
     }
 }
