@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\BookingController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\TestController;
 use Illuminate\Support\Facades\Route;
 
@@ -41,3 +43,6 @@ Route::get('/article/{id}' , [TestController::class ,'showArticle']);
 
 Route::get('/register' , [RegisterController::class , 'showForm']);
 Route::post('/register/submit' , [RegisterController::class , 'handleForm'])->name('register.submit');
+
+Route::resource('services', ServiceController::class);
+Route::resource('bookings', BookingController::class);
